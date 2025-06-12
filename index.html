@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meu Amorzinho - Amor em Porcentagem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pink-baby: #ffb6c1;
+      --black: #000000;
+      --white: #ffffff;
+      --font-family: 'Poppins', sans-serif;
+
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --border-radius: 16px;
+      --transition-speed: 0.3s;
+      --heart-size: 24px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-family);
+      min-height: 100vh;
+      background-color: var(--black);
+      color: var(--pink-baby);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xl);
+      transition: filter var(--transition-speed) ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      user-select: none;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body.dimmed {
+      filter: brightness(0.7);
+    }
+    body.bright {
+      filter: brightness(1.2);
+    }
+    header {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: var(--space-md);
+      border-bottom: 3px solid var(--pink-baby);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--pink-baby);
+    }
+    .brightness-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    button {
+      background-color: var(--pink-baby);
+      color: var(--black);
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover,
+    button:focus {
+      background-color: #ff9ecf;
+      outline: none;
+    }
+    main {
+      max-width: 900px;
+      width: 100%;
+      background: rgba(255 182 193 / 0.1);
+      border-radius: var(--border-radius);
+      padding: var(--space-lg);
+      box-shadow: 0 8px 20px rgba(255,182,193,0.25);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+      color: var(--pink-baby);
+      user-select: text;
+    }
+    h1, h2 {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: var(--space-md);
+      user-select: text;
+    }
+    .phrases {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap: var(--space-md);
+    }
+    .phrase {
+      background-color: rgba(255 182 193 / 0.2);
+      border-radius: var(--border-radius);
+      padding: var(--space-md);
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 6px 15px rgba(255,182,193,0.3);
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+    .phrase:hover {
+      background-color: rgba(255 182 193 / 0.4);
+      box-shadow: 0 9px 25px rgba(255 182 193,0.6);
+      color: var(--black);
+    }
+    .heart-icon {
+      font-size: 1.4rem;
+      color: var(--pink-baby);
+      user-select: none;
+    }
+    .hearts-container {
+      position: fixed;
+      pointer-events: none;
+      overflow: visible;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1000;
+      user-select: none;
+    }
+    .heart-particle {
+      position: absolute;
+      width: var(--heart-size);
+      height: var(--heart-size);
+      clip-path: polygon(
+        50% 0%, 65% 12%, 75% 25%, 80% 38%, 80% 50%, 
+        75% 62%, 65% 75%, 50% 87%, 35% 75%, 25% 62%, 
+        20% 50%, 20% 38%, 25% 25%, 35% 12%
+      );
+      transform-origin: center bottom;
+      opacity: 0.85;
+      animation: floatUp 1.2s ease forwards;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.15));
+      pointer-events: none;
+      user-select: none;
+    }
+    .heart-particle.color1 { background: #ff6f91; }
+    .heart-particle.color2 { background: #f06292; }
+    .heart-particle.color3 { background: #ec407a; }
+    .heart-particle.color4 { background: #ba68c8; }
+    .heart-particle.color5 { background: #ce93d8; }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateY(-80px) scale(1.3) rotate(15deg);
+        opacity: 0;
+      }
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 12px;
+      font-weight: 600;
+      color: var(--pink-baby);
+    }
+    thead tr {
+      background-color: var(--pink-baby);
+      color: var(--black);
+      font-size: 1.2rem;
+      border-radius: var(--border-radius);
+      user-select: none;
+    }
+    tbody tr {
+      background: rgba(255 182 193 / 0.2);
+      border-radius: var(--border-radius);
+      box-shadow: 0 3px 8px rgba(255 182 193 / 0.3);
+      transition: background-color 0.3s ease;
+    }
+    tbody tr:hover {
+      background-color: rgba(255 182 193 / 0.4);
+      cursor: default;
+      color: var(--black);
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      user-select: text;
+    }
+    .love-percentage-container {
+      width: 100%;
+      background-color: rgba(255 182 193 / 0.3);
+      border-radius: var(--border-radius);
+      padding: var(--space-sm);
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 10px rgba(255 182 193 / 0.5);
+      color: var(--pink-baby);
+      user-select: text;
+    }
+    .love-bar {
+      margin-top: 12px;
+      height: 20px;
+      width: 100%;
+      background: rgba(255 182 193 / 0.15);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+    .love-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff8fb6, #f06292);
+      border-radius: var(--border-radius);
+      transition: width 1.5s ease;
+    }
+    .heart-animation {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      animation: heartbeat 1s infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: var(--space-md);
+      }
+      ul.phrases {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="bright">
+  <header>
+    <div class="logo" aria-label="Título do site">Feliz Dia Dos Namorados ❤️</div>
+    <div class="brightness-control" aria-label="Controle de brilho">
+      <button id="dimBtn" aria-label="Diminuir brilho">Escurecer</button>
+      <button id="brightBtn" aria-label="Aumentar brilho">Aclarar</button>
+    </div>
+  </header>
+
+  <main>
+    <section aria-label="Frases bobas e fofas com corações">
+      <h1>Frases Bobas e Fofas <span aria-hidden="true">❤️</span></h1>
+      <ul class="phrases">
+        <li class="phrase" tabindex="0" role="button" aria-pressed="false">
+          Eu te amo até a última estrela do céu! <span class="heart-icon" aria-hidden="true">💗</span>
+        </li>
+        <li class="phrase" tabindex="0" role="button" aria-pressed="false">
+          Você é meu sorriso cada dia! <span class="heart-icon" aria-hidden="true">💖</span>
+        </li>
+        <li class="phrase" tabindex="0" role="button" aria-pressed="false">
+          Meu amorzinho, você ilumina meu mundo! <span class="heart-icon" aria-hidden="true">💓</span>
+        </li>
+        <li class="phrase" tabindex="0" role="button" aria-pressed="false">
+          Todo o amor que sinto por você é mais doce que chocolate! <span class="heart-icon" aria-hidden="true">💞</span>
+        </li>
+        <li class="phrase" tabindex="0" role="button" aria-pressed="false">
+          Te amo muitãoooo, você é meu tudo! <span class="heart-icon" aria-hidden="true">💕</span>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-label="Feliz Dia dos Namorados">
+      <h2>Amo amo amo amo de mais! <span aria-hidden="true">💝</span></h2>
+    </section>
+
+    <section aria-label="Tabela de quanto eu amo você">
+      <h2>Quanto Eu Amo Você</h2>
+      <table>
+        <thead>
+          <tr><th>Motivo</th><th>Quantidade</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Seu sorriso que me alegra</td><td>Mais do que as estrelas do céu</td></tr>
+          <tr><td>Seu abraço que me conforta</td><td>Até o infinito</td></tr>
+          <tr><td>Seu carinho que me aquece</td><td>Milhares de vezes</td></tr>
+          <tr><td>Seu amor que me completa</td><td>Para sempre e além</td></tr>
+          <tr><td>Você, meu amorzinho querido</td><td>Tudo, pra sempre</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="love-percentage-container" aria-label="Porcentagem do amor">
+      <div>Todo meu amor por você é:</div>
+      <div class="love-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+        <div class="love-bar-inner" id="loveBarInner"></div>
+      </div>
+      <div id="lovePercentText" style="font-weight:700; margin-top:8px;">100%</div>
+    </section>
+  </main>
+
+  <div class="hearts-container" aria-hidden="true"></div>
+
+  <div class="heart-animation" id="heartAnimation">
+    <img src="https://i.imgur.com/8Z5g5gD.png" alt="Coração mandando beijo" width="200" />
+  </div>
+
+  <script>
+    const body = document.body;
+    const dimBtn = document.getElementById('dimBtn');
+    const brightBtn = document.getElementById('brightBtn');
+
+    let brightness = 1.2;
+    function updateBrightness() {
+      if (brightness < 0.5) brightness = 0.5;
+      if (brightness > 1.5) brightness = 1.5;
+      body.style.filter = `brightness(${brightness})`;
+    }
+    dimBtn.addEventListener('click', () => {
+      brightness -= 0.15;
+      updateBrightness();
+    });
+    brightBtn.addEventListener('click', () => {
+      brightness += 0.15;
+      updateBrightness();
+    });
+    updateBrightness();
+
+    const phrases = document.querySelectorAll('.phrase');
+    const heartsContainer = document.querySelector('.hearts-container');
+    const heartColors = ['#ff6f91', '#f06292', '#ec407a', '#ba68c8', '#ce93d8'];
+
+    function createHeart(x, y) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart-particle');
+      heart.style.left = `${x}px`;
+      heart.style.top = `${y}px`;
+      heart.style.backgroundColor = heartColors[Math.floor(Math.random() * heartColors.length)];
+      heartsContainer.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 1200);
+    }
+
+    function emitHearts(event) {
+      const x = event.clientX;
+      const y = event.clientY;
+      for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+          const offsetX = (Math.random() - 0.5) * 40;
+          const offsetY = (Math.random() - 0.5) * 20;
+          createHeart(x + offsetX, y + offsetY);
+        }, i * 100);
+      }
+    }
+
+    phrases.forEach(phrase => {
+      phrase.addEventListener('click', emitHearts);
+      phrase.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          emitHearts(e);
+        }
+      });
+    });
+
+    // Love Percentage Bar (animated to 100%)
+    const loveBarInner = document.getElementById('loveBarInner');
+    const lovePercentText = document.getElementById('lovePercentText');
+
+    function animateLoveBar() {
+      let percent = 0;
+      const target = 100;
+      const increment = 1;
+      const interval = setInterval(() => {
+        if (percent >= target) {
+          clearInterval(interval);
+          return;
+        }
+        percent += increment;
+        loveBarInner.style.width = percent + '%';
+        lovePercentText.textContent = percent + '%';
+      }, 15);
+    }
+    animateLoveBar();
+
+    // Heart Animation
+    const heartAnimation = document.getElementById('heartAnimation');
+    setTimeout(() => {
+      heartAnimation.style.display = 'block';
+      heartAnimation.classList.add('heart-animation');
+    }, 3000);
+  </script>
+</body>
+</html>
